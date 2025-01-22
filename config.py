@@ -1,8 +1,9 @@
 from flask_sqlalchemy import SQLAlchemy
-from flask import Flask
+from flask import Flask,request
 from flask_cors import CORS
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from flasgger import Swagger
 
 #init db connect
 app = Flask(__name__)
@@ -30,3 +31,14 @@ Session = sessionmaker(bind=engine)
 def home():
     return "|21.83.0619 | Feri Irawan | backend-toko |"
 app.app_context().push()
+
+Swagger(app, template_file="swagger.yaml")
+
+@app.before_request
+def handle_options_request():
+    if request.method == "OPTIONS":
+        response = app.response_class()
+        response.headers["Access-Control-Allow-Origin"] = "*"
+        response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
+        response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
+        return response

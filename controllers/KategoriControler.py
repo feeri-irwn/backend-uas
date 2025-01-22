@@ -3,7 +3,7 @@ from models.KategoriModel import Kategori
 from config import db
 from flask_jwt_extended import jwt_required
 
-#@jwt_required()
+@jwt_required()
 def get_kategori():
     kategoris = Kategori.query.all()
     kategori_data = []
@@ -24,7 +24,7 @@ def get_kategori():
     }
     return jsonify(response), 200
 
-#@jwt_required()
+@jwt_required()
 def get_kategori_by_id(kategori_id):
     kategori = Kategori.query.get(kategori_id)
     if not kategori:

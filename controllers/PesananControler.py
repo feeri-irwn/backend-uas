@@ -4,7 +4,7 @@ from config import db
 from flask_jwt_extended import jwt_required
 
 # Get all pesanan
-#@jwt_required()
+@jwt_required()
 def get_pesanan():
     pesanans = Pesanan.query.all()
     pesanan_data = []
@@ -28,7 +28,7 @@ def get_pesanan():
     return jsonify(response), 200
 
 # Get pesanan by ID
-#@jwt_required()
+@jwt_required()
 def get_pesanan_by_id(pesanan_id):
     pesanan = Pesanan.query.get(pesanan_id)
     if not pesanan:
