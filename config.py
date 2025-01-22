@@ -1,6 +1,8 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask import Flask
 from flask_cors import CORS
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 
 #init db connect
 app = Flask(__name__)
@@ -12,7 +14,17 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://uassql_easiermad
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = '1234'
 
+# Use create_engine to enable connection pooling
+engine = create_engine(
+    app.config['SQLALCHEMY_DATABASE_URI'],
+    pool_size=5,  # Jumlah koneksi dalam pool
+    max_overflow=10,  # Jumlah koneksi yang bisa lebih dari pool_size
+    pool_timeout=30,  # Waktu tunggu dalam detik untuk koneksi
+    pool_recycle=1800  # Waktu hidup maksimum koneksi dalam detik (30 menit)
+)
+
 db = SQLAlchemy(app)
+Session = sessionmaker(bind=engine)
 
 @app.route('/')
 def home():

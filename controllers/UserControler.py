@@ -134,7 +134,7 @@ def delete_user(user_id):
     return jsonify({'message': 'User deleted successfully!'}), 200
 
 # Update sebagian data user (patch)
-@jwt_required()
+#@jwt_required()
 def patch_user(user_id):
     user = User.query.get(user_id)
     if not user:
