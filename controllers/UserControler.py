@@ -32,7 +32,7 @@ def check_password_hash(hashed_password, user_password):
     return bcrypt.checkpw(user_password.encode('utf-8'), hashed_password.encode('utf-8'))
 
 # Mendapatkan semua user
-@jwt_required()
+#@jwt_required()
 def get_users():
     users = User.query.all()
     users_data = []
@@ -55,7 +55,7 @@ def get_users():
     return jsonify(response), 200
 
 # Mendapatkan user berdasarkan ID
-@jwt_required()
+#@jwt_required()
 def get_user(user_id):
     user = User.query.get(user_id)
     if not user:
