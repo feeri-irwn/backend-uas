@@ -12,7 +12,7 @@ jakarta_tz = pytz.timezone('Asia/Jakarta')
 def get_current_time_in_wib():
     return datetime.now(jakarta_tz)
 
-@jwt_required()
+#@jwt_required()
 def get_produk():
     produks = Produk.query.all()
     produk_data = [produk.to_dict() for produk in produks]  # Menggunakan metode to_dict() yang sudah ada di model
@@ -26,7 +26,7 @@ def get_produk():
     }
     return jsonify(response), 200
 
-@jwt_required()
+#@jwt_required()
 def get_produk_by_id(produk_id):
     produk = Produk.query.get(produk_id)
     if not produk:

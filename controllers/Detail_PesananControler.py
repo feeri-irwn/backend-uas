@@ -4,7 +4,7 @@ from config import db
 from flask_jwt_extended import jwt_required
 
 # Mengambil semua detail pesanan
-@jwt_required()
+#@jwt_required()
 def get_detail_pesanan():
     details = DetailPesanan.query.all()
     detail_data = []
@@ -27,7 +27,7 @@ def get_detail_pesanan():
     return jsonify(response), 200
 
 # Mengambil detail pesanan berdasarkan order_id (pesananId)
-@jwt_required()
+#@jwt_required()
 def get_detail_pesanan_by_order_id(pesanan_id):
     details = DetailPesanan.query.filter_by(order_id=pesanan_id).all()
     if not details:
