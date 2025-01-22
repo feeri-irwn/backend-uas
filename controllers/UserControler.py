@@ -2,7 +2,7 @@ from flask import jsonify, request
 from models.UserModel import User
 from config import db
 import bcrypt
-from flask_jwt_extended import create_access_token, jwt_required
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from datetime import timedelta, datetime
 
 # Fungsi untuk login
@@ -18,7 +18,7 @@ def login():
     if not check_password_hash(user.password, password):
         return jsonify({'message': 'Invalid password'}), 401
     
-    access_token = create_access_token(identity=user.username, expires_delta=timedelta(days=1))
+    access_token = create_access_token(identity={'username': user.username, 'role': user.role}, expires_delta=timedelta(days=1))
     return jsonify({'access_token': access_token}), 200
 
 # Fungsi untuk meng-hash password
@@ -34,6 +34,15 @@ def check_password_hash(hashed_password, user_password):
 # Mendapatkan semua user
 @jwt_required()
 def get_users():
+    current_user = get_jwt_identity()
+
+    # Memeriksa apakah user yang login memiliki role admin
+    if current_user['role'] != 'admin':
+        return jsonify({
+            'status': 'failure',
+            'message': 'You do not have permission to access this resource.'
+        }), 403
+    
     users = User.query.all()
     users_data = []
     for user in users:
@@ -144,7 +153,7 @@ def patch_user(user_id):
     if 'username' in patch_data:
         user.username = patch_data['username']
     if 'password' in patch_data:
-        user.password = patch_data['password'] # Meng-hash password baru
+        user.password = hash_password(patch_data['password'])  # Meng-hash password baru
     if 'email' in patch_data:
         user.email = patch_data['email']
     if 'fullname' in patch_data:
