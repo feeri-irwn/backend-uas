@@ -34,14 +34,14 @@ def check_password_hash(hashed_password, user_password):
 # Mendapatkan semua user
 #@jwt_required()
 def get_users():
-    current_user = get_jwt_identity()
+    #current_user = get_jwt_identity()
 
     # Memeriksa apakah user yang login memiliki role admin
-    if current_user['role'] != 'admin':
-        return jsonify({
-            'status': 'failure',
-            'message': 'You do not have permission to access this resource.'
-        }), 403
+    # if current_user['role'] != 'admin':
+    #     return jsonify({
+    #         'status': 'failure',
+    #         'message': 'You do not have permission to access this resource.'
+    #     }), 403
     
     users = User.query.all()
     users_data = []
@@ -143,7 +143,7 @@ def delete_user(user_id):
     return jsonify({'message': 'User deleted successfully!'}), 200
 
 # Update sebagian data user (patch)
-@jwt_required()
+#@jwt_required()
 def patch_user(user_id):
     user = User.query.get(user_id)
     if not user:
